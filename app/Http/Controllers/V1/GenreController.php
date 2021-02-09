@@ -33,7 +33,7 @@ class GenreController extends Controller
         try {
             $response = $this->apiSuccess('fetched', GenreModel::getGenre());
         } catch (\Exception $e) {
-            $response = $this->apiError('API_ERROR');
+            $response = $this->apiError('API_ERROR', $e->getMessage());
         }
         return $response;
     }
