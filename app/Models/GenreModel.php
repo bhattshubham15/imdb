@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class GenreModel extends Model
 {
+    public $table = "genre_lkup";
     public $timestamps = false;
     /**
      * Create genre
