@@ -22,7 +22,7 @@ class MovieModel extends Model
     public static function getMovies($request)
     {
         $result = DB::table('movie_details')
-            ->leftjoin("genre_lkup", DB::raw("FIND_IN_SET(genre_lkup.id,any(string_to_array(movie_details.genre_id,',')::int[])"), ">", DB::raw("'0'"))
+            ->leftjoin("genre_lkup", DB::raw("FIND_IN_SET(CAST(genre_lkup.id AS CHAR),movie_details.genre_id)"), ">", DB::raw("'0'"))
             ->select('movie_details.id', 'name', 'director', 'popularity', 'imdb_score', 'genre_id', 'movie_details.created_on', DB::raw("GROUP_CONCAT(genre_lkup.genre_name) as genre_name"))
             ->groupBy('movie_details.id')
             ->orderByDesc('movie_details.popularity');
