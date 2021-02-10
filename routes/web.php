@@ -10,10 +10,6 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$app->middleware([
-    // ...
-    Fruitcake\Cors\HandleCors::class,
-]);
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
