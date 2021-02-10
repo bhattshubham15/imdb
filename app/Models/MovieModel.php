@@ -21,19 +21,15 @@ class MovieModel extends Model
      */
     public static function getMovies($request)
     {
-        $result = DB::table('movie_details')
-            ->leftjoin("genre_lkup", 'genre_lkup.id', "any(string_to_array(movie_details.genre_id, ',')::int[])")
-            ->select('movie_details.id', 'name', 'director', 'popularity', 'imdb_score', 'genre_id', 'movie_details.created_on', "string_agg(genre_name,',')")
-            ->groupBy('movie_details.id')
-            ->orderByDesc('movie_details.popularity');
-        if (!empty($request->genre_id)) {
-            $result = $result->whereIn('genre_lkup.id', $request->genre_id);
-        }
-        if (!empty($request->search_text)) {
-            $result = $result->where('name', 'LIKE', '%' . $request->search_text . '%')
-                ->orWhere('director', 'LIKE', '%' . $request->search_text . '%');
+        return DB::raw('select m.name,m.genre_id,m.popularity,m.director,m.imdb_score,string_agg(genre_name,',') genre_name from movie_details m inner join genre_lkup g on g.id = any(string_to_array(genre_id, ',')::int[]) group by m.id order by m.popularity desc');
+        // if (!empty($request->genre_id)) {
+        //     $result = $result->whereIn('genre_lkup.id', $request->genre_id);
+        // }
+        // if (!empty($request->search_text)) {
+        //     $result = $result->where('name', 'LIKE', '%' . $request->search_text . '%')
+        //         ->orWhere('director', 'LIKE', '%' . $request->search_text . '%');
 
-        }
-        return $result->paginate(10);
+        // }
+        // return $result->paginate(10);
     }
 }
