@@ -26,7 +26,7 @@ class MovieModel extends Model
             ->orderByDesc('movie_details.popularity');
         if (!empty($request->genre_name)) {
             for ($i = 0; $i <= count($request->genre_name) - 1; $i++) {
-                $result->orWhereRaw("find_in_set('CAST({$request->genre_name[$i]}) AS VARCHAR',movie_details.genre_id)");
+                $result->orWhereRaw("find_in_set('CAST({$request->genre_name[$i]} AS TEXT)',movie_details.genre_id)");
             }
         }
         if (!empty($request->search_text)) {
