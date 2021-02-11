@@ -12,9 +12,9 @@ class MovieModel extends Model
     /**
      * create a movie
      */
-    public static function createMovie($name, $director, $popularity, $imdb_score, $genre_id)
+    public static function createMovie($maxId, $name, $director, $popularity, $imdb_score, $genre_id)
     {
-        return DB::insert('insert into movie_details (name,director,popularity,imdb_score,genre_id) values (?,?,?,?,?)', [$name, $director, $popularity, $imdb_score, $genre_id]);
+        return DB::insert('insert into movie_details (id,name,director,popularity,imdb_score,genre_id) values (?,?,?,?,?,?)', [$maxId,$name, $director, $popularity, $imdb_score, $genre_id]);
     }
     /**
      * list the movies
@@ -35,5 +35,12 @@ class MovieModel extends Model
 
         }
         return $result->paginate(10);
+    }
+    /**
+     * Get max id
+     */
+    public static function getMaxId()
+    {
+        return DB::statement("SELECT setval(pg_get_serial_sequence('users', 'id'), coalesce(max(id),1), false) FROM users");
     }
 }
