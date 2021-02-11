@@ -26,7 +26,7 @@ class MovieModel extends Model
             ->orderByDesc('movie_details.popularity');
         if (!empty($request->genre_name)) {
             foreach ($request->genre_name as $val) {
-                $result->orWhereJsonContains('movie_details.genre_id', [$val]);
+                $result->orWhereJsonContains(json_decode(json_encode('movie_details.genre_id'), true), [$val]);
             }
         }
         if (!empty($request->search_text)) {
