@@ -25,8 +25,8 @@ class MovieModel extends Model
             ->select('movie_details.id', 'name', 'director', 'popularity', 'imdb_score', 'genre_id', 'movie_details.created_on', 'movie_details.genre_id')
             ->orderByDesc('movie_details.popularity');
         if (!empty($request->genre_name)) {
-            for ($i = 0; $i <= count($request->genre_name) - 1; $i++) {
-                $result->orWhereRaw("find_in_set('CAST({$request->genre_name[$i]} AS TEXT)',movie_details.genre_id)");
+            foreach ($request->genre_name as $val) {
+                $result->orWhereJsonContains('movie_details.genre_id', [$val]);
             }
         }
         if (!empty($request->search_text)) {
