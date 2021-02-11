@@ -41,6 +41,6 @@ class MovieModel extends Model
      */
     public static function getMaxId()
     {
-        return DB::statement("SELECT setval(pg_get_serial_sequence('users', 'id'), coalesce(max(id),1), false) FROM users");
+        return DB::statement("SELECT setval(pg_get_serial_sequence('movie_details', 'id'), coalesce(max(id),1), false) FROM movie_details");
     }
 }
