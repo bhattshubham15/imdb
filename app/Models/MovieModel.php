@@ -10,6 +10,13 @@ class MovieModel extends Model
     public $table = 'movie_details';
     public $timestamps = false;
     /**
+     * create a movie
+     */
+    public static function createMovie($name, $director, $popularity, $imdb_score, $genre_id)
+    {
+        return DB::insert('insert into movie_details (name,director,popularity,imdb_score,genre_id) values (?,?,?,?,?)', [$name, $director, $popularity, $imdb_score, $genre_id]);
+    }
+    /**
      * list the movies
      */
     public static function getMovies($request)
