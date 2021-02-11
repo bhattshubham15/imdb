@@ -9,7 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class MovieController extends Controller
 {
-
     /**
      * Create movie
      */
@@ -18,13 +17,17 @@ class MovieController extends Controller
         try {
             $this->validate($request, [
                 'name' => 'required|string|max:80',
-                'director' => 'required|string|max:80',
-                'popularity' => 'required|numeric',
-                'imdb_score' => 'required|numeric',
-                'genre_id' => 'required|string',
             ]);
-            MovieModel::createMovie($request->name, $request->director, $request->popularity, $request->imdb_score, $request->genre_id);
-            $response = $this->apiSuccess('movie created successfully');
+            $this->validateRequest($request);
+            $movieDetails = MovieModel::create();
+            $movieDetails->name = $request->name;
+            $movieDetails->director = $request->director;
+            $movieDetails->popularity = $request->popularity;
+            $movieDetails->imdb_score = $request->imdb_score;
+            $movieDetails->genre_name = $request->genre_name;
+            $movieDetails->created_on = date('Y-m-d');
+            $movieDetails->save();
+            $response = $this->apiSuccess('movie added successfully');
         } catch (ValidationException $valException) {
             $response = $this->buildFailedValidationResponse($request, $valException->errors(), true);
         } catch (\Exception $e) {
@@ -38,17 +41,12 @@ class MovieController extends Controller
     public function updateMovie(Request $request, $id)
     {
         try {
-            $this->validate($request, [
-                'director' => 'string|max:80',
-                'popularity' => 'numeric',
-                'imdb_score' => 'numeric',
-                'genre_id' => 'string',
-            ]);
+            $this->validateRequest($request);
             $movieDetails = MovieModel::find($id);
             $movieDetails->director = $request->director;
-            $movieDetails->popularity = $request->popularity ?? '';
+            $movieDetails->popularity = $request->popularity;
             $movieDetails->imdb_score = $request->imdb_score;
-            $movieDetails->genre_id = $request->genre_id;
+            $movieDetails->genre_name = $request->genre_name;
             $movieDetails->created_on = date('Y-m-d');
             $movieDetails->save();
             $response = $this->apiSuccess('movie updated successfully');
@@ -64,9 +62,14 @@ class MovieController extends Controller
      */
     public function deleteMovie($id)
     {
-        $movieDetails = MovieModel::find($id);
-        $movieDetails->delete();
-        return $this->apiSuccess('movie deleted successfully');
+        try {
+            $movieDetails = MovieModel::find($id);
+            $movieDetails->delete();
+            $response = $this->apiSuccess('movie deleted successfully');
+        } catch (\Exception $e) {
+            $response = $this->apiError('API_ERROR', $e->getMessage());
+        }
+        return $response;
     }
     /**
      * Get movie list
@@ -87,5 +90,18 @@ class MovieController extends Controller
             $response = $this->apiError('API_ERROR', $e->getMessage());
         }
         return $response;
+    }
+    /**
+     * Validate Request
+     */
+    public function validateRequest($request)
+    {
+        $this->validate($request, [
+            'director' => 'string|max:80',
+            'popularity' => 'required|numeric',
+            'imdb_score' => 'required|numeric',
+            'genre_name' => 'required|array|max:80',
+            'genre_name.*' => 'string',
+        ]);
     }
 }
