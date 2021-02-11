@@ -12,9 +12,9 @@ class MovieModel extends Model
     /**
      * create a movie
      */
-    public static function createMovie($maxId, $name, $director, $popularity, $imdb_score, $genre_id)
+    public static function createMovie($maxId, $name, $director, $popularity, $imdb_score, $genre_name)
     {
-        return DB::insert('insert into movie_details (id,name,director,popularity,imdb_score,genre_id) values (?,?,?,?,?,?)', [$maxId,$name, $director, $popularity, $imdb_score, $genre_id]);
+        return DB::insert('insert into movie_details (id,name,director,popularity,imdb_score,genre_name) values (?,?,?,?,?,?)', [$maxId,$name, $director, $popularity, $imdb_score, $genre_name]);
     }
     /**
      * list the movies
@@ -22,11 +22,11 @@ class MovieModel extends Model
     public static function getMovies($request)
     {
         $result = DB::table('movie_details')
-            ->select('movie_details.id', 'name', 'director', 'popularity', 'imdb_score', 'genre_id', 'movie_details.created_on', 'movie_details.genre_id')
+            ->select('movie_details.id', 'name', 'director', 'popularity', 'imdb_score', 'genre_name', 'movie_details.created_on', 'movie_details.genre_name')
             ->orderByDesc('movie_details.popularity');
         if (!empty($request->genre_name)) {
             foreach ($request->genre_name as $val) {
-                $result->orWhere('movie_details.genre_id', 'LIKE', '%'. $val . '%');
+                $result->orWhere('movie_details.genre_name', 'LIKE', '%'. $val . '%');
             }
         }
         if (!empty($request->search_text)) {

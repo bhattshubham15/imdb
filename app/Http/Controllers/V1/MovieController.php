@@ -41,7 +41,7 @@ class MovieController extends Controller
             $movieDetails->director = $request->director;
             $movieDetails->popularity = $request->popularity;
             $movieDetails->imdb_score = $request->imdb_score;
-            $movieDetails->genre_name = $request->genre_name;
+            $movieDetails->genre_name = json_encode($request->genre_name);
             $movieDetails->created_on = date('Y-m-d');
             $movieDetails->save();
             $response = $this->apiSuccess('movie updated successfully');
