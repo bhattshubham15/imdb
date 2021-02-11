@@ -28,6 +28,7 @@ $router->group(['prefix' => 'admin/v1', 'namespace' => 'V1', 'middleware' => 'au
     $router->post('add-movie', 'MovieController@createMovie');
     $router->put('update-movie/{id}', 'MovieController@updateMovie');
     $router->delete('delete-movie/{id}', 'MovieController@deleteMovie');
+    $router->delete('delete-genre/{id}', 'GenreController@deleteGenre');
 });
 
 $router->group(['prefix' => 'user/v1', 'namespace' => 'V1'], function ($router) {
