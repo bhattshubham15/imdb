@@ -75,8 +75,8 @@ class MovieController extends Controller
     {
         try {
             $this->validate($request, [
-                'genre_id' => 'array',
-                'genre_id.*' => 'integer',
+                'genre_name' => 'array',
+                'genre_name.*' => 'string',
                 'search_text' => 'string',
             ]);
             $getMovies = MovieModel::getMovies($request);
