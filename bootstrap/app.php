@@ -82,7 +82,7 @@ $app->middleware([
 ]);
 
 $app->routeMiddleware([
-    \App\Http\Middleware\Cors::class, //cors added here
+    App\Http\Middleware\CorsMiddleware::class, //cors added here
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 /*
