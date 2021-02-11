@@ -73,16 +73,14 @@ $app->configure('cors');
 |
  */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
 $app->middleware([
-    // ...
-    Fruitcake\Cors\HandleCors::class,
-]);
-
-$app->routeMiddleware([
     App\Http\Middleware\CorsMiddleware::class, //cors added here
+]);
+// $app->middleware([
+//     // ...
+//     Fruitcake\Cors\HandleCors::class,
+// ]);
+$app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 /*
