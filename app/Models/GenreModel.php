@@ -12,9 +12,9 @@ class GenreModel extends Model
     /**
      * Create genre
      */
-    public static function createGenre($gname)
+    public static function createGenre($id, $gname)
     {
-        return DB::insert('insert into genre_lkup (genre_name) values (?)', [$gname]);
+        return DB::insert('insert into genre_lkup (id, genre_name) values (?,?)', [$id, $gname]);
     }
     /**
      * Get genre
