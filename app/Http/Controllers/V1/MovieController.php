@@ -20,7 +20,8 @@ class MovieController extends Controller
             ]);
             $this->validateRequest($request);
             $maxId = MovieModel::getMaxId();
-            MovieModel::createMovie($maxId+1, $request->name, $request->director, $request->popularity, $request->imdb_score, json_encode($request->genre_name));
+            $maxId = $maxId ? $maxId->id + 1 : 1;
+            MovieModel::createMovie($maxId, $request->name, $request->director, $request->popularity, $request->imdb_score, json_encode($request->genre_name));
             $response = $this->apiSuccess('movie added successfully');
         } catch (ValidationException $valException) {
             $response = $this->buildFailedValidationResponse($request, $valException->errors(), true);
