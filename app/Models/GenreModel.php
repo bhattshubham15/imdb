@@ -25,4 +25,11 @@ class GenreModel extends Model
             ->select('id', 'genre_name', 'created_on')
             ->get();
     }
+    /**
+     * Get max id
+     */
+    public static function getMaxId()
+    {
+        return DB::table('genre_lkup')->latest('id')->first();
+    }
 }
