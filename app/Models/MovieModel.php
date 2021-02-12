@@ -34,7 +34,7 @@ class MovieModel extends Model
                 ->orWhere('director', 'LIKE', '%' . $request->search_text . '%');
 
         }
-        return $result->paginate(10);
+        return $result->paginate(15);
     }
     /**
      * Get max id
