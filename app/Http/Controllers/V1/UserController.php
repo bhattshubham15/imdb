@@ -43,10 +43,10 @@ class UserController extends Controller
             $token = AuthModel::login(request(['mobile_no', 'password']));
             if (!$token) {
                 //return failure
-                return response()->json(['message' => 'Token Not Created']);
+                return response()->json(['message' => 'Token Not Created', 'request' => request(['mobile_no', 'password'])], 400);
             } else {
                 //return successful response
-                return response()->json(['token' => $token, 'expiration_time' => auth()->factory()->getTTL() * 60, 'token_type' => 'bearer'], 201);
+                return response()->json(['token' => $token, 'expiration_time' => auth()->factory()->getTTL() * 60, 'token_type' => 'bearer'], 200);
             }
 
         } catch (\Exception $e) {
