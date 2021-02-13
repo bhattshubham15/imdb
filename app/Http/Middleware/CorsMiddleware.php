@@ -1,29 +1,16 @@
 <?php namespace App\Http\Middleware;
 
-class CorsMiddleware
-{
+class CorsMiddleware {
 
-    public function handle($request, \Closure $next)
-    {
-        $response = '';
-        $allowedDomains = array("http://localhost:8080");
-        $origin = $request->server('HTTP_ORIGIN');
-        if (in_array($origin, $allowedDomains)) {
-            //Intercepts OPTIONS requests
-            if ($request->isMethod('OPTIONS')) {
-                $response = response('', 200);
-            } else {
-                // Pass the request to the next middleware
-                $response = $next($request);
-            }
-            // Adds headers to the response
-            $response->header('Access-Control-Allow-Origin', $origin);
-            $response->header('Access-Control-Allow-Methods', 'OPTIONS, HEAD, GET, POST, PUT, PATCH, DELETE');
-            $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
-        }
+  public function handle($request, \Closure $next)
+  {
+    $response = $next($request);
 
-        // Sends it
-        return $response;
-    }
+    $response->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
+    $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
+    $response->header('Access-Control-Allow-Origin', '*');
+
+    return $response;
+  }
 
 }
