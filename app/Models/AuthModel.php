@@ -58,7 +58,6 @@ class AuthModel extends Model implements AuthenticatableContract, AuthorizableCo
      */
     public static function login($credentials)
     {
-        print_r(auth()->setTTL(60)->attempt($credentials));die;
         return auth()->setTTL(60)->attempt($credentials);
     }
 }
