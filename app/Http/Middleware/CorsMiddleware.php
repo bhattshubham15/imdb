@@ -5,6 +5,7 @@ class CorsMiddleware
 
     public function handle($request, \Closure $next)
     {
+        $response = '';
         $allowedDomains = array("http://localhost:8080");
         $origin = $request->server('HTTP_ORIGIN');
         if (in_array($origin, $allowedDomains)) {
