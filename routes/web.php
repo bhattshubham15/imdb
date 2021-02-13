@@ -15,12 +15,12 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => 'auth/v1', 'namespace' => 'V1'], function ($router) {
+$router->group(['prefix' => 'auth/v1', 'namespace' => 'V1', 'middleware' => 'cors'], function ($router) {
     $router->post('admin-register', 'UserController@register');
     $router->post('admin-login', 'UserController@login');
 });
 
-$router->group(['prefix' => 'admin/v1', 'namespace' => 'V1', 'middleware' => 'auth'], function ($router) {
+$router->group(['prefix' => 'admin/v1', 'namespace' => 'V1', 'middleware' => ['cors', 'auth']], function ($router) {
     $router->get('refresh', 'UserController@refreshToken');
     $router->get('logout', 'UserController@logout');
     $router->get('user-details', 'UserController@userDetails');
