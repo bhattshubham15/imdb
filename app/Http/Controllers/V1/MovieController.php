@@ -87,6 +87,19 @@ class MovieController extends Controller
         return $response;
     }
     /**
+     * Get movie list
+     */
+    public function viewMovie($id)
+    {
+        try {
+            $getMovies = MovieModel::getView($id);
+            $response = $this->apiSuccess('fetched', $getMovies);
+        } catch (\Exception $e) {
+            $response = $this->apiError('API_ERROR', $e->getMessage());
+        }
+        return $response;
+    }
+    /**
      * Validate Request
      */
     public function validateRequest($request)

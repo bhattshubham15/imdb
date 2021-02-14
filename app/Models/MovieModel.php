@@ -14,7 +14,7 @@ class MovieModel extends Model
      */
     public static function createMovie($maxId, $name, $director, $popularity, $imdb_score, $genre_name)
     {
-        return DB::insert('insert into movie_details (id,name,director,popularity,imdb_score,genre_name) values (?,?,?,?,?,?)', [$maxId,$name, $director, $popularity, $imdb_score, $genre_name]);
+        return DB::insert('insert into movie_details (id,name,director,popularity,imdb_score,genre_name) values (?,?,?,?,?,?)', [$maxId, $name, $director, $popularity, $imdb_score, $genre_name]);
     }
     /**
      * list the movies
@@ -26,7 +26,7 @@ class MovieModel extends Model
             ->orderByDesc('movie_details.popularity');
         if (!empty($request->genre_name)) {
             foreach ($request->genre_name as $val) {
-                $result->orWhere('movie_details.genre_name', 'LIKE', '%'. $val . '%');
+                $result->orWhere('movie_details.genre_name', 'LIKE', '%' . $val . '%');
             }
         }
         if (!empty($request->search_text)) {
@@ -42,5 +42,15 @@ class MovieModel extends Model
     public static function getMaxId()
     {
         return DB::table('movie_details')->latest('id')->first();
+    }
+    /**
+     * Get vie of movie
+     */
+    public static function getView($id)
+    {
+        return DB::table('movie_details')
+            ->select('id', 'name', 'director', 'popularity', 'imdb_score', 'genre_name', 'created_on')
+            ->where('id', $id)
+            ->first();
     }
 }
